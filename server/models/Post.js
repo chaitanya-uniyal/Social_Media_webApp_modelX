@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const postSchema = mongoose.Schema(
+const postSchema =  mongoose.Schema(
     {
         userID: {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
         },
         firstName: {
@@ -23,7 +23,7 @@ const postSchema = mongoose.Schema(
             of: Boolean,
         },
         comments: {
-            types: Array,
+            type: Array,
             default: [],
         }
     },{timestamps : true}
