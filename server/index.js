@@ -1,23 +1,23 @@
-const express = require("express");
-const bodyParser = require("boody-parser");
-const mongoose = require("mongoose");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const multer = require("multer");
-const helmet = require("helmet");
-const morgan = require("morgan");
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+import dotenv from "dotenv";
+import multer from "multer";
+import helmet from "helmet";
+import morgan from "morgan";
 import path from "path";
-import {fileURLPath} from "url";
+import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
-import {register} from "./controler/auth.js";
+import {register} from "./controller/auth.js";
 import {createPost} from "./controller/posts.js";
 import { verifyToken } from "./middleware/auth.js";
 
 // Configurations
 
-const __filename = fileURLTopath(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
@@ -44,7 +44,7 @@ const Storage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage});
+const upload = multer({Storage});
 
 // Routes with Files
 app.post("/auth/register",upload.single("picture"),register);
@@ -59,11 +59,14 @@ app.use("/posts", postRoutes);
 //Database setup - Using MongoDB
 
 const PORT = process.env.PORT || 6001;
+// const newConnectionOptions = {~
+//     // Use the new URL parser
+//     useNewUrlParser: true,
+//     // Use the new Server Discovery and Monitoring engine
+//     useUnifiedTopology: true,
+//   };
 
-mongoose.connect(process.env.MONGO_URL,{
-    useNewUrlParser : true,
-    useUnifiedTopology: true,
-
-}).then(()=>{
+mongoose.connect(process.env.MONGO_URL)
+.then(()=>{
     app.listen(PORT ,()=> console.log(`Server Port: ${PORT}`));
     }).catch((error) => console.log(`${error} did not connect`));

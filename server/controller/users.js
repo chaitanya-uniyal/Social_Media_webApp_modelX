@@ -1,5 +1,5 @@
-import { errorMonitor } from "multer-gridfs-storage";
-import User from "../models/User";
+//import { errorMonitor } from "multer-gridfs-storage";
+import User from "../models/User.js";
 
 //Read operations
 export const getUser = async (req,res)=>{
